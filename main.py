@@ -2,6 +2,8 @@ import json
 import os
 from sys import stdout
 
+from utils import print_list, prompt_selection, walklevel
+
 CONFIG_PATH = './config.json'
 stdout.reconfigure(encoding='utf-8')
 
@@ -30,29 +32,6 @@ def get_config() -> Config:
 
     return config
 
-# https://stackoverflow.com/a/234329
-
-
-def walklevel(root_dir: str, level=1) -> tuple[str, list[str], list[str]]:
-    """Walk through directories until a certain depth.
-    Similiar to os.walk()
-
-    Args:
-        root_dir (str): Path to target directory
-        level (int, optional): Depth. Defaults to 1.
-
-    Yields:
-        Iterator[tuple[str, list[str], list[str]]]: Root, directories, files
-    """
-    root_dir = root_dir.rstrip(os.path.sep)
-    assert os.path.isdir(root_dir)
-    num_sep = root_dir.count(os.path.sep)
-    for root, dirs, files in os.walk(root_dir):
-        yield root, dirs, files
-        num_sep_this = root.count(os.path.sep)
-        if num_sep + level <= num_sep_this:
-            del dirs[:]
-
 
 def get_downloads_by_most_recent(download_path: str) -> list[str]:
     files: list[str] = []
@@ -63,8 +42,14 @@ def get_downloads_by_most_recent(download_path: str) -> list[str]:
     return files
 
 
-if __name__ == '__main__':
+def main() -> None:
     config = get_config()
-    downloads = get_downloads_by_most_recent(config["download_dir"])
-    for file in downloads:
-        print(file)
+    downloads = get_downloads_by_most_recent(config['download_dir'])
+    print_list(map(lambda filepath: filepath.split(
+        os.sep)[-1], downloads), 'Most Recent:', 9)
+    a = prompt_selection(['a', 'b', 'c', 'd'], 'testt:', True)
+    print(a)
+
+
+if __name__ == '__main__':
+    main()
