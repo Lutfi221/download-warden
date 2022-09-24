@@ -1,6 +1,7 @@
 
 import json
 import os
+from typing import Callable
 
 
 class Config(dict):
@@ -30,7 +31,7 @@ def get_config(config_path: str) -> Config:
     return config
 
 
-def get_user_variables(variables_json_path: str) -> dict[str, str]:
+def get_user_variables(variables_json_path: str) -> dict[str, str | Callable[[], str]]:
     try:
         with open(variables_json_path, 'r') as f:
             return json.load(f)

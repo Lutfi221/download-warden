@@ -1,4 +1,5 @@
 import os
+from typing import Callable
 
 
 # https://stackoverflow.com/a/234329
@@ -76,8 +77,11 @@ def prompt_selection(items: list[str], heading: str, use_letters=False) -> int:
             print('')
 
 
-def expand_variables(content: str, variables: dict[str, str]) -> str:
+def expand_variables(content: str, variables: dict[str, str | Callable[[], str]]) -> str:
     output = content
     for key, value in variables.items():
+        if callable(value):
+            output = output.replace('$' + key, value())
+            continue
         output = output.replace('$' + key, value)
     return output
