@@ -48,6 +48,11 @@ def print_list(items: list[str], heading: str, n=9999, use_letters=False) -> Non
         print_item(i, item)
 
 
+def print_latest_downloads(downloads: list[str], depth=1, n=9) -> None:
+    print_list(map(lambda filepath: os.sep.join(filepath.split(os.sep)
+               [-depth:]), downloads), 'Latest:', 9)
+
+
 def prompt_selection(items: list[str], heading: str, use_letters=False) -> int:
     print_list(items, heading, len(items), use_letters)
 
@@ -58,9 +63,9 @@ def prompt_selection(items: list[str], heading: str, use_letters=False) -> int:
             if use_letters:
                 selected_index = letter_to_number(user_input[0])
             else:
-                selected_index = int(user_input)
+                selected_index = int(user_input) - 1
 
-            if selected_index > len(items) or selected_index <= 0:
+            if selected_index + 1 > len(items) or selected_index + 1 <= 0:
                 print('\nOut of range')
                 continue
             return selected_index
@@ -69,3 +74,10 @@ def prompt_selection(items: list[str], heading: str, use_letters=False) -> int:
             print('')
             print(e)
             print('')
+
+
+def expand_variables(content: str, variables: dict[str, str]) -> str:
+    output = content
+    for key, value in variables.items():
+        output = output.replace('$' + key, value)
+    return output

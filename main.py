@@ -1,36 +1,14 @@
 import json
 import os
 from sys import stdout
+from config import get_config
+from operators.Command import Command
+from operators.Operator import Operator
 
-from utils import print_list, prompt_selection, walklevel
+from utils import print_latest_downloads, prompt_selection, walklevel
 
 CONFIG_PATH = './config.json'
 stdout.reconfigure(encoding='utf-8')
-
-
-class Config:
-    download_dir: str
-
-
-def get_config() -> Config:
-    """Reads config. Creates a default config file if doesn't exists.
-
-    Returns:
-        Config: Configuration
-    """
-    config_exists = os.path.isfile(CONFIG_PATH)
-    if not config_exists:
-        config: Config = {
-            'download_dir': os.path.join(os.environ['USERPROFILE'], 'Downloads')
-        }
-        with open(CONFIG_PATH, 'w') as f:
-            json.dump(config, f, indent=4)
-        return config
-
-    with open(CONFIG_PATH, 'r') as f:
-        config: Config = json.load(f)
-
-    return config
 
 
 def get_downloads_by_most_recent(download_path: str) -> list[str]:
@@ -43,12 +21,23 @@ def get_downloads_by_most_recent(download_path: str) -> list[str]:
 
 
 def main() -> None:
-    config = get_config()
-    downloads = get_downloads_by_most_recent(config['download_dir'])
-    print_list(map(lambda filepath: filepath.split(
-        os.sep)[-1], downloads), 'Most Recent:', 9)
-    a = prompt_selection(['a', 'b', 'c', 'd'], 'testt:', True)
-    print(a)
+    config = get_config(CONFIG_PATH)
+    operators: list[Operator] = [Command(config)]
+    variables: dict[str, str] = {}
+
+    while True:
+        variables['root'] = config['download_dir']
+        downloads = get_downloads_by_most_recent(config['download_dir'])
+
+        for i, downloadPath in enumerate(downloads, 1):
+            variables[str(i)] = downloadPath
+
+        print_latest_downloads(downloads)
+
+        op_index = prompt_selection(
+            list(map(lambda op: op.name, operators)), 'Operators:', True)
+
+        operators[op_index].call(downloads, variables)
 
 
 if __name__ == '__main__':
