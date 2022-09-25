@@ -7,7 +7,8 @@ from operators.Operator import Operator
 
 from utils import print_latest_downloads, prompt_selection, walklevel
 
-CONFIG_PATH = './config.json'
+CONFIG_PATH = os.path.join(os.path.dirname(
+    os.path.realpath(__file__)), 'config.json')
 stdout.reconfigure(encoding='utf-8')
 
 
