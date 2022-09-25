@@ -77,9 +77,21 @@ def prompt_selection(items: list[str], heading: str, use_letters=False) -> int:
             print('')
 
 
-def expand_variables(content: str, variables: dict[str, str | Callable[[], str]]) -> str:
+def expand_variables(content: str,
+                     variables: dict[str, str | Callable[[], str]]) -> str:
     output = content
-    for key, value in variables.items():
+
+    def get_key_len(key_value_pair: tuple[str, any]) -> int:
+        return len(key_value_pair[0])
+
+    # Sorts the variables so the ones with longer key names
+    # are checked first than the shorter ones.
+    #
+    # Useful when there are variables such as $e and $edc simultaneously
+    key_value_pairs = list(variables.items())
+    key_value_pairs.sort(key=get_key_len, reverse=True)
+
+    for key, value in key_value_pairs:
         if callable(value):
             output = output.replace('$' + key, value())
             continue
