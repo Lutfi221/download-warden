@@ -49,9 +49,14 @@ def print_list(items: list[str], heading: str, n=9999, use_letters=False) -> Non
         print_item(i, item)
 
 
-def print_latest_downloads(downloads: list[str], depth=1, n=9) -> None:
-    print_list(map(lambda filepath: os.sep.join(filepath.split(os.sep)
-               [-depth:]), downloads), 'Latest:', 9)
+def truncate_list_of_downloads(downloads: list[str], depth=1):
+    return map(lambda filepath: os.sep.join(filepath.split(os.sep)
+               [-depth:]), downloads)
+
+
+def print_latest_downloads(downloads: list[str], depth=1,
+                           n=9, heading='Latest:') -> None:
+    print_list(truncate_list_of_downloads(downloads, depth), heading, n)
 
 
 def prompt_selection(items: list[str], heading: str, use_letters=False) -> int:

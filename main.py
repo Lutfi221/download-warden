@@ -3,6 +3,7 @@ from sys import stdout
 from config import get_config, get_user_variables
 from explorer import get_current_explorer_path
 from operators.Command import Command
+from operators.Open import Open
 from operators.Operator import Operator
 
 from utils import print_latest_downloads, prompt_selection, walklevel
@@ -23,7 +24,7 @@ def get_downloads_by_most_recent(download_path: str) -> list[str]:
 
 def main() -> None:
     config = get_config(CONFIG_PATH)
-    operators: list[Operator] = [Command(config)]
+    operators: list[Operator] = [Command(config), Open(config)]
     variables = get_user_variables(config['variables_json'])
     variables['e'] = get_current_explorer_path
 
