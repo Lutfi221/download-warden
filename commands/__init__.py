@@ -25,7 +25,7 @@ class CommandEntry():
         self.help_description = help_description
 
     def is_alias(self, alias: str) -> bool:
-        return alias in self.aliases
+        return alias.lower() in self.aliases
 
 
 REGISTERED_COMMANDS = [
