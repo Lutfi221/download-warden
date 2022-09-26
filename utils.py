@@ -24,6 +24,15 @@ def walklevel(root_dir: str, level=1) -> tuple[str, list[str], list[str]]:
             del dirs[:]
 
 
+def get_downloads_by_most_recent(download_path: str) -> list[str]:
+    files: list[str] = []
+    for root, dirnames, filenames in walklevel(download_path, 1):
+        files.extend(
+            map(lambda filename: os.path.join(root, filename), filenames))
+    files.sort(key=os.path.getctime, reverse=True)
+    return files
+
+
 def letter_to_number(letter: str, start=0) -> int:
     return ord(letter.lower()) - (97 - start)
 
