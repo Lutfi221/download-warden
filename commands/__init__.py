@@ -5,6 +5,7 @@ from commands.list_recent import list_recent
 from commands.move import move
 from commands.start import start
 from commands.vars import vars
+from commands.quit import quit
 
 Variables = dict[str, str | Callable[[], str]]
 CommandFunction = Callable[[str, list[str], Variables], str]
@@ -37,7 +38,9 @@ REGISTERED_COMMANDS = [
     CommandEntry(vars, ['vars', 'v'],
                  'List variables', vars.help_description),
     CommandEntry(move, ['move', 'mv'],
-                 'Move file(s)', move.help_description)
+                 'Move file(s)', move.help_description),
+    CommandEntry(quit, ['exit', 'quit', 'ex'],
+                 'Exit', quit.help_description)
 ]
 
 
