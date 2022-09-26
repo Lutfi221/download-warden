@@ -3,6 +3,7 @@ from typing import Callable
 from commands.execute import execute
 from commands.list_recent import list_recent
 from commands.start import start
+from commands.vars import vars
 
 Variables = dict[str, str | Callable[[], str]]
 CommandFunction = Callable[[str, list[str], Variables], str]
@@ -31,7 +32,9 @@ REGISTERED_COMMANDS = [
     CommandEntry(list_recent, ['list', 'l'],
                  'List recent downloads', list_recent.help_description),
     CommandEntry(execute, ['execute', 'x'],
-                 'Execute shell string', execute.help_description)
+                 'Execute shell string', execute.help_description),
+    CommandEntry(vars, ['vars', 'v'],
+                 'List variables', vars.help_description)
 ]
 
 
