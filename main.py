@@ -14,10 +14,10 @@ stdout.reconfigure(encoding='utf-8')
 def main() -> None:
     config = get_config(CONFIG_PATH)
     variables = get_user_variables(config['variables_json'])
-    variables['e'] = get_current_explorer_path
     variables['root'] = config['download_dir']
 
     while True:
+        variables['e'] = get_current_explorer_path
         downloads = get_downloads_by_most_recent(config['download_dir'])
         for i, downloadPath in enumerate(downloads):
             if (i > 9):
