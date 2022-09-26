@@ -39,10 +39,17 @@ def process_cmd(cmd_string: str, variables: Variables):
     splitted = cmd_string.split(' ')
     cmd_alias = splitted[0]
 
+    # If asking for help
+    if (cmd_string == 'help'):
+        for command_entry in REGISTERED_COMMANDS:
+            print('{}\t{}'.format(
+                command_entry.aliases[0],
+                command_entry.description))
+        return
+
     for cmd_entry in REGISTERED_COMMANDS:
         if cmd_entry.is_alias(cmd_alias):
-
-            # If asking for help
+            # If asking for help of the command
             if (len(splitted) == 2 and
                     (splitted[1].endswith('-help') or
                      splitted[1] == '-h')):
