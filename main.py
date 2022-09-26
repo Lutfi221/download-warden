@@ -24,7 +24,7 @@ def main() -> None:
                 break
             variables[str(i)] = downloadPath
 
-        user_input = input(' > ')
+        user_input = input('\n > ')
         process_cmd(user_input, variables)
 
 
