@@ -1,5 +1,5 @@
 import os
-from sys import stdout
+from sys import stdout, argv
 from config import get_config, get_user_variables
 from explorer import get_current_explorer_path
 from commands import process_cmd
@@ -23,6 +23,10 @@ def main() -> None:
             if (i > 9):
                 break
             variables[str(i)] = downloadPath
+
+        if len(argv) > 1:
+            process_cmd(' '.join(argv[1:]), variables)
+            return
 
         user_input = input('\n > ')
         process_cmd(user_input, variables)
