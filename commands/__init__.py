@@ -2,6 +2,7 @@
 from typing import Callable
 from commands.execute import execute
 from commands.list_recent import list_recent
+from commands.move import move
 from commands.start import start
 from commands.vars import vars
 
@@ -34,7 +35,9 @@ REGISTERED_COMMANDS = [
     CommandEntry(execute, ['execute', 'x'],
                  'Execute shell string', execute.help_description),
     CommandEntry(vars, ['vars', 'v'],
-                 'List variables', vars.help_description)
+                 'List variables', vars.help_description),
+    CommandEntry(move, ['move', 'mv'],
+                 'Move file(s)', move.help_description)
 ]
 
 
